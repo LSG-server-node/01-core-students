@@ -2,10 +2,11 @@
 // Contains methods for handling routes like GET, POST, PUT, DELETE for users.
 // Delegates business logic to the user service.
 
-import { NextFunction, type Request, type Response } from 'express';
+import { type Request, type Response } from 'express';
 import { httpStatus } from '../config/httpStatusCodes';
 import logger from '../config/logger';
 import { UserService } from '../services/user.service';
+import { toUserResponse } from '../mappers/user.mapper';
 
 export class UserController {
   private readonly userService: UserService;
@@ -14,29 +15,20 @@ export class UserController {
     this.userService = new UserService();
   }
 
-  create = (req: Request, res: Response): void => {
-    logger.debug('Controller: Received request to create a new user', {
-      body: req.body,
-    });
+  getAll = (req: Request, res: Response): void => {
+    logger.debug(`Controller: Received getAll request`);
     try {
-      const body = req.body;
-      if (!body) {
-        throw new Error('Request body is missing' + httpStatus.BAD_REQUEST);
-      }
-      if (!body.name || !body.email || !body.password || !body.birthday) {
-        throw new Error(
-          'Missing required fields: name, email, password, birthday' +
-            httpStatus.BAD_REQUEST
-        );
-      }
-      const user = this.userService.create();
+      const users = this.userService.getAll();
+      const data = users.map(toUserResponse); // <- NOT exposing sensitive data
+
       const response = {
-        message: 'User created successfully',
-        data: user,
+        message: 'Users fetched successfully',
+        length: data.length,
+        data,
       };
-      res.status(httpStatus.CREATED).send(response);
-    } catch (error: unknown) {
-      logger.debug({ body: req.body }, 'Controller: Error creating user');
+      res.send(response);
+    } catch (error) {
+      logger.debug('Controller: Error fetching users');
       res.status(httpStatus.BAD_REQUEST).send({ error });
     }
   };

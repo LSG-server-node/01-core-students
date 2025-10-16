@@ -2,13 +2,12 @@
 // Ensures type safety throughout the application when working with users.
 
 export interface IUser {
-  id?: string;
+  id: string;
   name: string;
   email: string;
   password: string;
   birthday: Date;
-  isBlocked?: boolean;
-  createdAt?: Date;
-  updatedAt?: Date;
-  token?: string;
+  isBlocked: boolean;
+  createdAt: Date;
+  updatedAt: Date;
 }

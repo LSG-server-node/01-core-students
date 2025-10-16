@@ -4,7 +4,7 @@
 import logger from '../config/logger';
 import { IUser } from '../interfaces/user.interface';
 
-const users = [
+const usersDB = [
   {
     id: '1',
     name: 'John Doe',
@@ -28,30 +28,12 @@ const users = [
 ];
 
 export class UserRepository {
-  create = (data: IUser): IUser | null => {
-    logger.debug('Repository: Creating user with data', { data });
-    const createdUser = users.push({
-      id: (users.length + 1).toString(),
-      ...data,
-      createdAt: new Date(),
-      updatedAt: new Date(),
-    });
-    logger.debug('Repository: User created', {
-      user: createdUser,
-    });
-    return createdUser as IUser;
-  };
-
-  getByEmail = (email: string): IUser | null => {
-    logger.debug(`Repository: Fetching user by email: ${email}`);
-    const userFound = users.find((user) => user.email === email);
-    if (!userFound) {
-      logger.debug(`Repository: No user found with email: ${email}`);
-      return null;
-    }
-    logger.debug(
-      `Repository: User with email ${email} fetched and transformed`
+  getAll = (filters: { includeBlocked?: boolean }): IUser[] => {
+    logger.debug(`Repository: Finding users`);
+    const users = usersDB.filter((user) =>
+      filters.includeBlocked ? true : !user.isBlocked
     );
-    return userFound;
+    logger.debug(`Repository: Found ${users.length} users`);
+    return users;
   };
 }
