@@ -7,4 +7,4 @@ import { UserController } from '../controllers/user.controller';
 const userController = new UserController();
 export const userRouter = Router();
 
-userRouter.post('/', userController.create);
+userRouter.get('/', userController.getAll);
