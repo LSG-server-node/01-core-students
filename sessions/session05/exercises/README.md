@@ -8,7 +8,7 @@ Crear una ruta para obtener una lista de películas desde un array en memoria (q
 
 ## Requisitos
 
-- **Ruta:** `mydominio/api/v1/films/list`
+- **Ruta:** `mydominio/api/v1/films`
 - **Método HTTP:** `GET`
 - **Origen de datos:** un array en memoria con varias películas creadas manualmente.
 - **Respuesta:** por cada película, devolver **solo** los campos:
