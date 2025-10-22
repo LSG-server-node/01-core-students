@@ -1,7 +1,6 @@
 // Implements business logic for user operations.
 // Processes requests from the controller and interacts with the repository as needed.
 
-import { httpStatus } from '../config/httpStatusCodes';
 import logger from '../config/logger';
 import { UserRepository } from '../repositories/user.repository';
 import { IUser } from '../interfaces/user.interface';

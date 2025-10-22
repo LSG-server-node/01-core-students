@@ -1,5 +1,8 @@
+// Defines pure transformation functions for mapping between User domain types and DTOs.
+// To adapt data across architectural layers.
+
 import { IUser } from '../interfaces/user.interface';
-import { UserResponseDto } from '../dtos/user-response.dto';
+import { UserResponseDto } from '../dtos/user.dto';
 
 export const toUserResponse = (u: IUser): UserResponseDto => ({
   id: u.id,
