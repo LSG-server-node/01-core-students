@@ -8,4 +8,4 @@ const userController = new UserController();
 export const userRouter = Router();
 
 userRouter.get('/', userController.getAll);
-userRouter.get('/:id', userController.getAll);
+userRouter.get('/:id', userController.getById);
