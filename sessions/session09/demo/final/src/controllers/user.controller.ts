@@ -119,7 +119,7 @@ export class UserController {
     }
   };
 
-  update = async (req: Request, res: Response): void => {
+  update = (req: Request, res: Response): void => {
     const userId = req.params.id;
     const body = req.body;
     logger.debug(`Controller: Received request to update user id: ${userId}`, {
