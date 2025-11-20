@@ -1,4 +1,4 @@
-# Ejercicio: Middleware de Tiempo de Ejecución
+# Ejercicio 2 — Middleware de Tiempo de Ejecución
 
 ## Objetivo
 

@@ -1,3 +1,3 @@
-# Demo API – UPDATE desde “BBDD” en memoria (array)
+# Demo API – Middleware gestión de errorers
 
-Pequeña API de ejemplo que expone un endpoint `PUT /api/v1/users/:id` para actualizar un recurso almacenado en un **array en memoria** (simulando una base de datos).
+Se añade a la API la gestión de errores mediante la clase `AppError` y un middleware centralizado que transforma y responde los errores con los códigos HTTP apropiados.
