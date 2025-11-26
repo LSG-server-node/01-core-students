@@ -28,11 +28,19 @@ const usersDB = [
 ];
 
 export class UserRepository {
-  getAll = (filters: { includeBlocked?: boolean }): IUser[] => {
+  getAll = (
+    filters: { includeBlocked?: boolean },
+    pagination: { skip: number; limit: number }
+  ): IUser[] => {
     logger.debug(`Repository: Finding users`);
-    const users = usersDB.filter((user) =>
-      filters.includeBlocked ? true : !user.isBlocked
-    );
+    pagination.skip = pagination.skip || 0;
+    pagination.limit =
+      !pagination.limit || pagination.limit === 0
+        ? usersDB.length
+        : pagination.limit;
+    const users = usersDB
+      .filter((user) => (filters.includeBlocked ? true : !user.isBlocked))
+      .slice(pagination.skip, pagination.skip + pagination.limit);
     logger.debug(`Repository: Found ${users.length} users`);
     return users;
   };

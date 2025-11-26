@@ -69,10 +69,10 @@ export class UserService {
     return age;
   };
 
-  getAll = (): IUser[] => {
+  getAll = (pagination: { skip: number; limit: number }): IUser[] => {
     logger.debug(`Service: Fetching all users`);
     const filters = { includeBlocked: false }; // Filter logic
-    return this.userRepository.getAll(filters);
+    return this.userRepository.getAll(filters, pagination);
   };
 
   getById = (id: string): IUser => {

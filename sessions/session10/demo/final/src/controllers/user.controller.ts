@@ -21,9 +21,18 @@ export class UserController {
   }
 
   getAll = (req: Request, res: Response, next: NextFunction): void => {
-    logger.debug(`Controller: Received getAll request`);
+    logger.debug(
+      `Controller: Received getAll request with query: ${JSON.stringify(
+        req.query
+      )}`
+    );
     try {
-      const users = this.userService.getAll();
+      const { skip = 0, limit = 0 } = req.query;
+      const pagination = {
+        skip: parseInt(skip as string, 10),
+        limit: parseInt(limit as string, 10),
+      };
+      const users = this.userService.getAll(pagination);
       const data = users.map(toUserResponse); // <- NOT exposing sensitive data
 
       const response = {
