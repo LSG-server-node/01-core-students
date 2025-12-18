@@ -11,9 +11,7 @@ export const app = express();
 app.disable('x-powered-by');
 
 // Connect to the database
-void (async () => {
-  await createConnection();
-})();
+await createConnection();
 
 // Allow cors for all connexions (development)
 app.use(cors());

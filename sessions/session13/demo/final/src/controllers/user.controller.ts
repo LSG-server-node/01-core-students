@@ -61,11 +61,6 @@ export class UserController {
     const userId = req.params.id;
     logger.debug(`Controller: Received getById request for user id: ${userId}`);
     try {
-      if (!userId || isNaN(Number(userId))) {
-        throw new AppError('Invalid user id', httpStatus.BAD_REQUEST, {
-          id: userId,
-        });
-      }
       const user = this.userService.getById(userId);
       const data = toUserResponse(user);
 
@@ -128,7 +123,7 @@ export class UserController {
     }
   };
 
-  create = (req: Request, res: Response): void => {
+  create = (req: Request, res: Response, next: NextFunction): void => {
     const body = req.body;
     logger.debug('Controller: Received request to create a new user', {
       body: req.body,
@@ -169,7 +164,7 @@ export class UserController {
     }
   };
 
-  update = (req: Request, res: Response): void => {
+  update = (req: Request, res: Response, next: NextFunction): void => {
     const userId = req.params.id;
     const body = req.body;
     logger.debug(`Controller: Received request to update user id: ${userId}`, {

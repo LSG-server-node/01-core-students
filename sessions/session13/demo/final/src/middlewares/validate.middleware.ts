@@ -37,7 +37,11 @@ export const validate = <ReqParams, ReqBody, ReqQuery>(
       next(new Error('Validation type not supported'));
       return;
     }
-    const result = schema.validate(objToValidate, { abortEarly: false });
+    const result = schema.validate(objToValidate, {
+      abortEarly: false,
+      convert: true,
+      stripUnknown: true,
+    });
     if (result.error) {
       logger.warn(
         { errors: result.error.details.map((detail) => detail.message) },

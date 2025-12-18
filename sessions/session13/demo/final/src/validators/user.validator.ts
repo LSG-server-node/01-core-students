@@ -4,14 +4,35 @@
 import Joi from 'joi';
 
 export class UserValidator {
-  private static readonly id = Joi.string();
-  private static readonly email = Joi.string().email();
-  private static readonly name = Joi.string().alphanum().min(3).max(30);
-  private static readonly password = Joi.string();
+  // Common options you should use when validating:
+  // schema.validate(input, { abortEarly: false, convert: true, stripUnknown: true });
+
+  private static readonly id = Joi.string().trim();
+
+  private static readonly email = Joi.string()
+    .trim()
+    .lowercase()
+    .email({ tlds: { allow: false } }); // Disable TLD validation for flexibility
+
+  private static readonly name = Joi.string()
+    .trim()
+    .min(3)
+    .max(30)
+    .pattern(/^[\p{L}\p{M} ]+$/u); // Allows letters (including accented), spaces
+
+  private static readonly password = Joi.string().trim();
+
+  // Accept ISO date strings or Date objects; Joi will convert when { convert: true }.
   private static readonly birthday = Joi.date().iso();
-  private static readonly isBlocked = Joi.boolean();
-  private static readonly skip = Joi.number().min(1);
-  private static readonly limit = Joi.number().min(1).max(100);
+
+  // Coercion equivalent to your normalizeUserData() (truthy/falsy strings + numbers) if { convert: true }.
+  private static readonly isBlocked = Joi.boolean()
+    .truthy(1, '1', 'true', 'yes', 'y', 'sí', 'si')
+    .falsy(0, '0', 'false', 'no', 'n');
+
+  // Pagination: allow querystring strings, convert them to numbers if { convert: true }.
+  private static readonly skip = Joi.number().integer().min(0);
+  private static readonly limit = Joi.number().integer().min(1).max(100);
 
   static readonly userIdSchema = Joi.object({
     id: UserValidator.id.required(),
@@ -20,13 +41,15 @@ export class UserValidator {
   static readonly userPaginationSchema = Joi.object({
     skip: UserValidator.skip,
     limit: UserValidator.limit,
-  }).with('skip', 'limit');
+  }).and('skip', 'limit'); // both or none
 
   static readonly userCreateSchema = Joi.object({
     name: UserValidator.name.required(),
     email: UserValidator.email.required(),
     password: UserValidator.password.required(),
     birthday: UserValidator.birthday.required(),
+    // if you want to allow create with isBlocked, add it here:
+    // isBlocked: UserValidator.isBlocked.default(false),
   });
 
   static readonly userUpdateSchema = Joi.object({
@@ -35,5 +58,5 @@ export class UserValidator {
     password: UserValidator.password,
     birthday: UserValidator.birthday,
     isBlocked: UserValidator.isBlocked,
-  });
+  }).min(1); // avoid empty PATCH/PUT requests
 }
