@@ -13,14 +13,7 @@ export interface IUser {
 }
 
 type SystemKeys = 'id' | 'createdAt' | 'updatedAt';
-export type EditableUser = Omit<IUser, SystemKeys>;
 
-export type NormalizableUser = Partial<
-  Omit<EditableUser, 'isBlocked' | 'birthday'>
-> & {
-  birthday?: Date | string;
-  isBlocked?: boolean | string | number;
-};
+export type IUserCreate = Omit<IUser, SystemKeys>;
 
-export type IUserCreate = EditableUser;
-export type IUserUpdate = Partial<EditableUser>;
+export type IUserUpdate = Partial<Omit<IUser, SystemKeys>>;
