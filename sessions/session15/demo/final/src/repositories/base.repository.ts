@@ -53,8 +53,12 @@ export abstract class BaseRepository<T, TModel extends Document> {
     return this.transformId(doc);
   }
 
-  async create(data: Partial<T>): Promise<T | null> {
-    logger.debug(`Repository: Creating ${this.entityName}`, { data });
+  async create(data: Partial<TModel>): Promise<T | null> {
+    logger.debug(
+      `Repository: Creating ${this.entityName} with data: ${JSON.stringify(
+        data
+      )}`
+    );
     const doc = await this.model.create(data);
     if (!doc) {
       logger.debug(`Repository: ${this.entityName} creation returned null`);
@@ -64,10 +68,12 @@ export abstract class BaseRepository<T, TModel extends Document> {
     return this.transformId(doc);
   }
 
-  async update(id: string, data: Partial<T>): Promise<T | null> {
-    logger.debug(`Repository: Updating ${this.entityName} with id: ${id}`, {
-      data,
-    });
+  async update(id: string, data: Partial<TModel>): Promise<T | null> {
+    logger.debug(
+      `Repository: Updating ${
+        this.entityName
+      } with id: ${id} and data: ${JSON.stringify(data)}`
+    );
     const doc = await this.model.findByIdAndUpdate(id, data, { new: true });
     if (!doc) {
       logger.debug(
