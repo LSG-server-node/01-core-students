@@ -5,6 +5,7 @@ import { httpStatus } from '../config/httpStatusCodes';
 import logger from '../config/logger';
 import { IUser, IUserCreate, IUserUpdate } from '../interfaces/user.interface';
 import { UserRepository } from '../repositories/user.repository';
+import { PasswordHelper } from '../utils/password.helper';
 import { AppError } from '../utils/application.error';
 
 export class UserService {
@@ -80,6 +81,7 @@ export class UserService {
         { birthday: data.birthday }
       );
     }
+    data.password = await PasswordHelper.hashPassword(data.password);
     const createdUser = await this.userRepository.create(data);
     if (!createdUser) {
       logger.warn('User creation failed');
