@@ -1,9 +1,3 @@
-# Demo API – Login y Register
+# Demo API – Protect routes
 
-Implementación de **login** y **registro de usuarios** siguiendo la arquitectura por capas.
-
-En esta sesión se mostrará:
-
-- Cómo implementar **login**.
-- Cómo implementar **registro de usuarios** con hash de contraseña.
-- Cómo generar un **access token (JWT)** para su uso posterior en la autenticación.
+Implementación de **middleware** para proteger las rutas con autenticación.
